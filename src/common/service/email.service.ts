@@ -57,7 +57,7 @@ export const sendEmail = async (
       emails: [
         {
           to: to,
-          from: process.env.EMAIL_FROM || "hello@newsletter.analyticsauditor.com",
+          from: process.env.EMAIL_FROM || "updates@notifications.analyticsauditor.com",
           subject: subject,
           html_body: html,
           transactional: true,

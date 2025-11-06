@@ -77,8 +77,9 @@ export const confirmEmail = async (req: Request, res: Response, next: NextFuncti
     user.isVerified = true;
     if (!user.hasBeenAskedToSubscribe) {
       const subscribeLink = `${process.env.CLIENT_URL}/subscribe?email=${encodeURIComponent(user.email)}`;
+      sendEmail(user.email, user.firstName, subscribeLink, "SUBSCRIBE_PROMPT")
+        .catch(err => console.error("Failed to send subscribe email:", err));
 
-      await sendEmail(user.email, user.firstName, subscribeLink, "SUBSCRIBE_PROMPT");
       user.hasBeenAskedToSubscribe = true;
       await user.save();
     }
@@ -240,7 +241,7 @@ export const subscribe = async (req: Request, res: Response, next: NextFunction)
       },
     });
 
-    return res.send("✅ You are now subscribed! Thank you!");
+    return res.send("You are now subscribed! Thank you!");
   } catch (err) {
     console.error("Subscription error:", err);
     return res.status(500).send("Something went wrong.");

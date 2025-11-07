@@ -4,14 +4,21 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /usr/src/app
 
+
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install --production
-
-# Copy source code
+# Copy all source code and config files
 COPY . .
+
+# Install all dependencies (including devDependencies)
+RUN npm install
+
+# Build TypeScript
+RUN npm run build
+
+# Remove devDependencies for a smaller image (optional)
+RUN npm prune --production
 
 # Expose port (change if your app uses a different port)
 EXPOSE 8080

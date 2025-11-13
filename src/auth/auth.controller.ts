@@ -212,8 +212,14 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
 
     await user.save();
 
-    // send confirmation email
-    await sendEmail(user.email, user.firstName, "", "PASSWORD_RESET_SUCCESS");
+
+    await sendEmail(
+      user.email,
+      user.firstName,
+      `${process.env.CLIENT_URL}`,
+      "PASSWORD_RESET_SUCCESS"
+    );
+
 
     return successResponse(res, 'Password reset successfully');
   } catch (err) {
